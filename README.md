@@ -28,6 +28,36 @@ Select a specific book
       }
     }
 
+Filtered search (ex. 1)
+
+    {
+      allBooks(yearPublished: "1974", title_Icontains: "Mecano", review: 10) {
+        edges {
+          node {
+            title
+            author
+            yearPublished
+            review
+          }
+        }
+      }
+    }
+
+Filtered search (ex. 2)
+ 
+    {
+      allBooks(yearPublished: "2002", title: "Atomic") {
+        edges {
+          node {
+            title
+            author
+            yearPublished
+            review
+          }
+        }
+      }
+    }
+
 Creating a book
 
     mutation createMutation {

@@ -1,6 +1,8 @@
 import graphene
+from graphene import Node
+from graphene_django import DjangoObjectType
+from graphene_django.filter import DjangoFilterConnectionField
 
-from graphene_django import DjangoObjectType, DjangoListField
 from .models import Book
 
 
@@ -8,17 +10,36 @@ class BookType(DjangoObjectType):
     class Meta:
         model = Book
         fields = "__all__"
+        filter_fields = {
+            "id": ["exact"],
+            "title": ["exact", "icontains", "istartswith"],
+            "author": ["exact", "icontains", "istartswith"],
+            "year_published": ["exact"],
+            "review": ["exact"],
+        }
+        interfaces = (Node,)
 
 
 class Query(graphene.ObjectType):
-    all_books = graphene.List(BookType)
-    book = graphene.Field(BookType, book_id=graphene.Int())
+    book = Node.Field(BookType)
+    all_books = DjangoFilterConnectionField(BookType)
 
-    def resolve_all_books(self, info, **kwargs):
-        return Book.objects.all()
+    # all_books = graphene.List(BookType)
+    # book = graphene.Field(BookType, book_id=graphene.Int())
+    # book_by_year = graphene.List(BookType, year=graphene.String())
+    # book_by_author = graphene.List(BookType, author=graphene.String())
 
-    def resolve_book(self, info, book_id):
-        return Book.objects.get(pk=book_id)
+    # def resolve_all_books(self, info, **kwargs):
+    #     return Book.objects.all()
+    #
+    # def resolve_book(self, info, book_id):
+    #     return Book.objects.get(pk=book_id)
+    #
+    # def resolve_book_by_year(self, info, year):
+    #     return Book.objects.filter(year_published=year)
+    #
+    # def resolve_book_by_author(self, info, author):
+    #     return Book.objects.filter(author__icontains=author)
 
 
 class BookInput(graphene.InputObjectType):
@@ -41,7 +62,7 @@ class CreateBook(graphene.Mutation):
             title=book_data.title,
             author=book_data.author,
             year_published=book_data.year_published,
-            review=book_data.review
+            review=book_data.review,
         )
         book_instance.save()
         return CreateBook(book=book_instance)
