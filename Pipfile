@@ -6,9 +6,13 @@ name = "pypi"
 [packages]
 django = "*"
 graphene-django = "*"
-django-extensions = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-sugar = "*"
+model-bakery = "*"
+pytest-django = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.8"
