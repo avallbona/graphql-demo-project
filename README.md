@@ -1,7 +1,8 @@
 # Demo graphql project
 
-## Tutorial from Twilio
-https://www.twilio.com/blog/graphql-apis-django-graphene
+## Resources
+* https://www.twilio.com/blog/graphql-apis-django-graphene
+* https://morningpython.com/2019/12/23/unit-testing-graphene-django-api-with-pytest/
 
 
 ## Queries

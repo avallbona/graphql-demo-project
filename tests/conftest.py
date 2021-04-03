@@ -1,7 +1,8 @@
 import pytest
 from graphene.test import Client
-from model_bakery import baker, seq
+from model_bakery import baker
 
+from api.models import Book
 from api.schema import schema
 
 
@@ -12,7 +13,22 @@ def graphql_client():
 
 @pytest.fixture
 def books():
-    yield baker.make("api.Book", title=seq("title "), _quantity=3)
+    books = [
+        baker.make(
+            Book,
+            title="django for professionals",
+            year_published="2020",
+            review=5,
+        ),
+        baker.make(Book, title="react for beginners", year_published="2020", review=3),
+        baker.make(
+            Book, title="javascript for dummies", year_published="2020", review=1
+        ),
+        baker.make(Book, title="css for dummies", year_published="2021", review=4),
+        baker.make(Book, title="html for dummies", year_published="2021", review=2),
+    ]
+
+    yield books
 
 
 @pytest.fixture
